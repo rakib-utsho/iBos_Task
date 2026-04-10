@@ -1,28 +1,86 @@
 "use client";
 import MyFormInput from "@/components/form/MyFormInput";
 import MyFormWrapper from "@/components/form/MyFormWrapper";
-import Link from "next/link";
+import { getRoleFromUser } from "@/lib/auth/roles";
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { z } from "zod";
 
 type LoginValues = {
   emailOrUserId: string;
   password: string;
 };
 
+const loginSchema = z.object({
+  emailOrUserId: z
+    .string({ required_error: "Email is required" })
+    .min(1, "Email is required")
+    .email("Enter a valid email"),
+  password: z
+    .string({ required_error: "Password is required" })
+    .min(6, "Password must be at least 6 characters"),
+});
+
 function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const handleLogin = async (values: LoginValues) => {
+    const supabase = createSupabaseBrowserClient();
+
     setIsSubmitting(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    try {
+      // In development, this creates/updates demo employee and candidate users from env values.
+      await fetch("/api/auth/bootstrap-demo-users", {
+        method: "POST",
+      });
 
-    toast.success("Login form submitted", {
-      description: `Email/User ID: ${values.emailOrUserId}`,
-    });
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: values.emailOrUserId,
+        password: values.password,
+      });
 
-    setIsSubmitting(false);
+      if (error) {
+        toast.error(error.message || "Login failed.");
+        return;
+      }
+
+      const fallbackUserResponse = await supabase.auth.getUser();
+      const user = data.user ?? fallbackUserResponse.data.user;
+      const role = getRoleFromUser(user);
+
+      if (!role) {
+        toast.error("No role found for this account. Please contact admin.");
+        return;
+      }
+
+      const sessionResponse = await supabase.auth.getSession();
+      if (!sessionResponse.data.session) {
+        toast.error("Session not created. Please try again.");
+        return;
+      }
+
+      toast.success("Sign in successful");
+
+      const targetPath =
+        role === "employee" ? "/employer-dashboard" : "/candidate-dashboard";
+
+      router.replace(targetPath);
+      // Hard navigation fallback for any client router race condition after auth cookie write.
+      setTimeout(() => {
+        window.location.assign(targetPath);
+      }, 120);
+
+      router.refresh();
+    } catch {
+      toast.error("Unexpected error while signing in.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -34,6 +92,7 @@ function Home() {
 
         <MyFormWrapper<LoginValues>
           onSubmit={handleLogin}
+          resolver={zodResolver(loginSchema)}
           defaultValues={{
             emailOrUserId: "",
             password: "",
@@ -60,15 +119,7 @@ function Home() {
             labelClassName="text-sm font-medium text-(--akij-text)"
             inputClassName="h-11 rounded-lg border-(--akij-border) bg-white px-3 pr-11 text-sm text-(--akij-text) placeholder:text-(--akij-subtext) focus:ring-(--akij-btn-start)"
           />
-
-          <div className="mb-6 flex justify-end">
-            <Link
-              href="/auth/forgot-password"
-              className="text-sm text-(--akij-text) transition hover:text-(--akij-btn-start)"
-            >
-              Forget Password?
-            </Link>
-          </div>
+          <div className="mb-6" />
 
           <button
             type="submit"

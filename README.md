@@ -89,6 +89,25 @@ NEXT_PUBLIC_DEV_BASE_URL=http://localhost:5000/api
 
 Make sure to copy or edit `.env` for your local environment.
 
+### Supabase setup
+
+Supabase connection is now prepared with shared helpers:
+
+- Browser client: `src/lib/supabase/client.ts`
+- Server client: `src/lib/supabase/server.ts`
+- Admin client (server only): `src/lib/supabase/admin.ts`
+
+1. Copy `.env.example` to `.env.local`.
+2. Set these values from your Supabase project settings:
+
+```text
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...
+```
+
+Important: never expose `SUPABASE_SERVICE_ROLE_KEY` in client-side code.
+
 ## Installation (Windows / PowerShell)
 
 Open PowerShell in the project root and run:

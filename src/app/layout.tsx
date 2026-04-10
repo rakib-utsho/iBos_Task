@@ -1,8 +1,3 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { Toaster } from "sonner";
-import { Suspense } from "react";
-import ReduxProvider from "@/redux/Provider";
 import Loading from "@/components/Others/Loader/Loading";
 import {
   bitcount,
@@ -13,6 +8,12 @@ import {
   roboto,
   rowdies,
 } from "@/fonts/Fonts";
+import QueryProvider from "@/providers/QueryProvider";
+import ReduxProvider from "@/redux/Provider";
+import type { Metadata } from "next";
+import { Suspense } from "react";
+import { Toaster } from "sonner";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -30,10 +31,12 @@ export default function RootLayout({
         className={`${openSans.variable} ${playfair.variable} ${bitcount.variable} ${lobster.variable} ${roboto.variable} ${gravitas.variable} ${rowdies.variable} antialiased`}
       >
         <Suspense fallback={<Loading />}>
-          <ReduxProvider>
-            {children}
-            <Toaster richColors position="top-right" />
-          </ReduxProvider>
+          <QueryProvider>
+            <ReduxProvider>
+              {children}
+              <Toaster richColors position="top-right" />
+            </ReduxProvider>
+          </QueryProvider>
         </Suspense>
       </body>
     </html>

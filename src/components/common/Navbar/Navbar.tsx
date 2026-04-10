@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import AuthActions from "./AuthActions";
 
 export const Navbar = () => {
   return (
@@ -16,11 +17,11 @@ export const Navbar = () => {
           />
         </Link>
 
-        <h1 className="pointer-events-none absolute left-1/2 w-[58vw] max-w-[420px] -translate-x-1/2 truncate text-center text-lg font-semibold tracking-tight text-(--akij-heading) sm:w-[48vw] sm:text-xl md:w-auto md:max-w-none md:text-[30px]">
+        <h1 className="pointer-events-none absolute left-1/2 w-[58vw] max-w-105 -translate-x-1/2 truncate text-center text-lg font-semibold tracking-tight text-(--akij-heading) sm:w-[48vw] sm:text-xl md:w-auto md:max-w-none md:text-[30px]">
           Akij Resource
         </h1>
 
-        <div className="ml-auto w-[100px] shrink-0" aria-hidden="true" />
+        <AuthActions />
       </div>
       <div className="sr-only" aria-label="Application name">
         Akij Resource
