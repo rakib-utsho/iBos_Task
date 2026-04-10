@@ -1,6 +1,7 @@
 import { Mail, PhoneCall } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import logo from "@/assets/logo-reverse.png";
 
 export const Footer = () => {
   return (
@@ -13,7 +14,7 @@ export const Footer = () => {
             className="text-base font-semibold tracking-tight text-white"
           >
             <Image
-              src={"/images/logo-reverse.png"}
+              src={logo}
               alt="Akij Resource Logo"
               width={100}
               height={40}

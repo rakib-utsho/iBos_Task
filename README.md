@@ -1,188 +1,158 @@
-# next-redux-starter — Next.js + TypeScript + Redux + shadcn-style Boilerplate
+# iBos Task - Online Test Platform
 
-This repository is a lightweight Next.js boilerplate that demonstrates a recommended folder structure and wiring for:
+A role-based online test platform built with Next.js and Supabase.
 
-- Next.js 16 + React 19
-- Redux Toolkit + React-Redux (with `redux-persist`)
-- shadcn-style component organization (component-driven UI under `src/components` / `src/components/ui`)
-- Tailwind CSS and utility-first styling
+## Project Overview
 
-Use this starter when you want a modern Next.js app scaffolded with a predictable folder layout and ready-to-use Redux integration.
+This project includes two primary user roles:
 
-## Quick links
+- Employee: create and publish online tests
+- Candidate: join tests, attempt questions, and submit answers
 
-- Package manifest: `package.json`
-- Environment: `.env` (dev/prod base URLs)
-- App entry: `src/app/layout.tsx` and the `src/app/(commonLayout)` area
+Core flow implemented:
 
-## What you get
+- Employee creates test (basic info + question set)
+- Candidate sees available tests
+- Candidate starts exam with timer and submits
+- Result submission is stored through backend APIs
 
-- Next 16 & React 19 stack
-- Redux Toolkit store setup at `src/redux/store.ts`
-- Provider wiring at `src/redux/Provider.tsx`
-- Example auth slice at `src/redux/features/auth/authSlice.ts`
-- Organized UI components under `src/components` and `src/components/ui` (shadcn-inspired)
-- Common components: Navbar, Footer, Loader, PageNotFound
-- Utility helper at `src/lib/utils.ts`
+## Tech Stack
 
-## Contract (small)
+- Next.js 16 (App Router)
+- React 19 + TypeScript
+- Tailwind CSS
+- Redux Toolkit
+- React Query + Axios
+- Supabase (Auth + Database)
+- React Hook Form + Zod
 
-- Inputs: developer provides environment variables in `.env` and installs node deps.
-- Outputs: a running Next.js dev server (hot reload) and persisted Redux state (via `redux-persist`).
-- Success criteria: `npm run dev` starts without critical runtime errors; Redux store hydrates; UI components render.
+## Setup Instructions
 
-## Edge cases to watch
+### 1) Clone and install
 
-- Missing `.env` values (app expects NEXT_PUBLIC_DEV_BASE_URL / NEXT_PUBLIC_BASE_URL)
-- Redux-persist storage mismatch or SSR hydration warnings — check `redux-persist` config if you see flashing state.
-- Next.js app dir behavior — pages and app router differences (this project uses the App Router).
-- Large bundles: check dependencies and tree-shake unused libs.
+```bash
+git clone https://github.com/rakib-utsho/iBos_Task.git
+cd iBos_Task
+npm install
+```
 
-## Folder structure explained
+### 2) Environment variables
 
-Top-level (relevant files/folders):
+Create `.env` and set:
 
-- `package.json` - scripts and dependencies
-- `.env` - public env vars (see below)
-- `src/app/` - Next.js App Router (layout, pages grouped in subfolders)
-  - `layout.tsx` - root layout
-  - `not-found.tsx` - 404 handling
-  - `(commonLayout)/` - example common layout and page
-  - `(authLayout)/` - placeholder for auth-scoped routes
-
-- `src/components/` - UI components
-  - `common/` - Navbar, Footer
-  - `home/` - Home page component
-  - `Others/` - Loader, PageNotFound components
-  - `ui/` - primitive UI components (button.tsx, card.tsx, sheet.tsx) — this mirrors the shadcn approach (design-system primitives)
-
-- `src/lib/` - utilities (`utils.ts`)
-- `src/redux/` - Redux wiring
-  - `Provider.tsx` - React-Redux provider wrapper
-  - `store.ts` - store configuration
-  - `api/` - baseApi and testapi
-  - `features/` - slices (example: `auth/authSlice.ts`)
-
-## package.json (high level)
-
-Important dependencies from the project (exact versions available in `package.json`):
-
-- `next`: 16.0.0
-- `react`: 19.2.0
-- `@reduxjs/toolkit`, `react-redux`: redux toolkit & bindings
-- `redux-persist`: state persistence
-- `tailwindcss` & `@tailwindcss/postcss` (Tailwind v4 listed)
-- UI helper libs: `lucide-react`, `clsx`, `class-variance-authority`, etc.
-
-Dev dependencies include TypeScript and ESLint.
-
-## Environment
-
-Example `.env` values (present in repo):
-
-```text
+```dotenv
 NEXT_PUBLIC_ENV=development
 NEXT_PUBLIC_PORT=5000
 NEXT_PUBLIC_BASE_URL=https://api.yourproductiondomain.com/api
 NEXT_PUBLIC_DEV_BASE_URL=http://localhost:5000/api
+
+NEXT_PUBLIC_SUPABASE_URL=YOUR_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY=YOUR_SUPABASE_SERVICE_ROLE_KEY
+
+# Demo credentials (development only)
+DEMO_EMPLOYEE_EMAIL=employee@example.com
+DEMO_EMPLOYEE_PASSWORD=Employee@12345
+DEMO_CANDIDATE_EMAIL=candidate@example.com
+DEMO_CANDIDATE_PASSWORD=Candidate@12345
 ```
 
-Make sure to copy or edit `.env` for your local environment.
+### 3) Run the app
 
-### Supabase setup
-
-Supabase connection is now prepared with shared helpers:
-
-- Browser client: `src/lib/supabase/client.ts`
-- Server client: `src/lib/supabase/server.ts`
-- Admin client (server only): `src/lib/supabase/admin.ts`
-
-1. Copy `.env.example` to `.env.local`.
-2. Set these values from your Supabase project settings:
-
-```text
-NEXT_PUBLIC_SUPABASE_URL=...
-NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-SUPABASE_SERVICE_ROLE_KEY=...
-```
-
-Important: never expose `SUPABASE_SERVICE_ROLE_KEY` in client-side code.
-
-## Installation (Windows / PowerShell)
-
-Open PowerShell in the project root and run:
-
-```powershell
-# install dependencies
-npm install
-
-# run dev server
+```bash
 npm run dev
 ```
 
-The project exposes these scripts from `package.json`:
+### 4) Build for production
 
-- `dev` — next dev
-- `build` — next build
-- `start` — next start
-- `lint` — eslint (run `npm run lint` to see lint issues)
-
-## Adding / using shadcn-style components
-
-This repo already organizes UI primitives under `src/components/ui` following a shadcn-style approach (component-first primitives like `button.tsx`, `card.tsx`, `sheet.tsx`). If you want to adopt the official `shadcn/ui` setup, follow the upstream docs to install and configure it, or use the existing primitives as a pattern.
-
-Suggested steps to add the shadcn toolchain (optional):
-
-1. Install the `shadcn/ui` package or use their scaffolding tool per their docs.
-2. Generate components into `src/components/ui`.
-3. Wire theme / tailwind tokens as needed.
-
-## Notes on Redux setup
-
-- Store configuration lives in `src/redux/store.ts`.
-- A `Provider` wrapper exists at `src/redux/Provider.tsx` — use the wrapper in `_app` or root layout to provide the store.
-- `redux-persist` is installed to keep state across sessions; verify storage config for SSR correctness.
-
-## Development tips
-
-- If you get hydration warnings, ensure that persisted state is rehydrated client-side only (guard server vs client usage).
-- Use the `src/components/ui/*` primitives to keep the UI consistent.
-- Add tests around reducers and selectors for early feedback.
-
-## Quality gates (recommended checks)
-
-- Build: run `npm run build` locally to ensure production builds. (Not run here.)
-- Lint/Typecheck: run your linter and TypeScript check via your editor or `npm run lint` plus `tsc --noEmit`.
-- Tests: no tests included by default — consider adding a small Jest/Testing Library setup.
-
-## Try it — quick commands
-
-```powershell
-# clone the repo (change the URL if you forked or renamed the repository)
-git clone https://github.com/rakib-utsho/NextJs_REDUX_boilerplate.git
-cd NextJs_REDUX_boilerplate
-
-# install dependencies
-npm install
-
-# run dev server
-npm run dev
+```bash
+npm run lint
+npm run build
+npm run start
 ```
 
-Open <http://localhost:3000> (or the port set in `NEXT_PUBLIC_PORT`) in your browser.
+## API / Backend Integration (Bonus)
 
-## Contributing and next steps
+Backend/API integration is implemented using Next.js route handlers and Supabase.
 
-- Add more feature slices under `src/redux/features/` as your app grows.
-- Expand `src/components/ui` with shared primitives and document usage.
-- Add CI (GitHub Actions) to run lint/build on PRs.
+Implemented routes:
+
+- `/api/employee/tests`
+- `/api/candidate/tests`
+- `/api/candidate/tests/[testId]`
+- `/api/candidate/tests/[testId]/submit`
+- `/api/auth/bootstrap-demo-users`
+
+## Additional Questions (Completed)
+
+### 1) MCP Integration
+
+Yes, MCP-style workflows were used in development.
+
+- MCP used: Supabase workflow + VS Code/GitHub coding workflow
+- Work performed:
+  - Supabase client/server/admin setup
+  - Role-based auth flow (employee/candidate)
+  - Test create/list/attempt/submit API flow
+  - Query/mutation architecture with React Query + Axios
+- Accomplishment:
+  - End-to-end online test lifecycle implemented and running
+
+Future MCP idea for this project:
+
+- Use Supabase MCP + Chrome DevTools MCP together to debug request chains, verify schema changes, and optimize runtime performance.
+
+### 2) AI Tools for Development
+
+Tools/processes used and recommended:
+
+- GitHub Copilot: component scaffolding, refactor assistance, typed boilerplate
+- ChatGPT / Claude-style assistants: architecture review, edge-case planning, API validation
+- Recommended process:
+  - Generate initial implementation quickly
+  - Enforce lint/type/build checks
+  - Refactor into reusable hooks/components
+  - Validate with realistic scenarios
+
+### 3) Offline Mode During Exam
+
+If a candidate loses internet during an exam:
+
+- Auto-save answers + timer checkpoint to IndexedDB/localStorage
+- Detect offline/online state and show status banner
+- Keep local timer running and reconcile with server on reconnect
+- Queue unsent answer updates and sync with idempotent requests
+- Auto-submit queued final payload once reconnected
+- Keep server as source of truth for final scoring and validity
+
+## Deliverables
+
+- GitHub repository with code:
+  - <https://github.com/rakib-utsho/iBos_Task>
+- README with setup instructions:
+  - Included in this file
+- Completed answers to additional questions:
+  - Included above
+- Live demo link:
+  - Add your link: <https://your-live-demo-url>
+- Video recording link:
+  - Add your link: <https://your-video-link>
+- Backend/API integration (bonus):
+  - Implemented
+
+## Submission Checklist
+
+- [x] Source code in repository
+- [x] Setup instructions in README
+- [x] Additional question answers in README
+- [ ] Live demo URL added
+- [ ] Video recording URL added
+- [x] Backend/API integration implemented
 
 ## Author
 
-Md. Rakibul Islam — Junior Frontend Developer
+Md. Rakibul Islam
 
 ## License
 
-This project is open-source and released under the MIT License. See the `LICENSE` file for the full text.
-
----
+MIT (see [LICENSE](LICENSE))

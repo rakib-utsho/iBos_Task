@@ -2,13 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 import AuthActions from "./AuthActions";
 
+import logo from "@/assets/logo.png";
+
 export const Navbar = () => {
   return (
     <header className="w-full border-b border-(--akij-border) bg-(--akij-header-bg)">
       <div className="relative mx-auto flex h-14 w-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
         <Link href="/" className="z-10 shrink-0">
           <Image
-            src={"/images/logo.png"}
+            src={logo}
             alt="Akij Resource Logo"
             width={100}
             height={40}
