@@ -6,7 +6,7 @@ export default function CommonLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div>
+    <div className="font-inter">
       <Navbar />
       {children}
       <Footer />

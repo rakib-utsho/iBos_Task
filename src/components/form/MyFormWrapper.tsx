@@ -2,13 +2,20 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
-import { FieldValues, FormProvider, Resolver, useForm, useWatch } from "react-hook-form"; // Fixed missing useWatch import
+import {
+  DefaultValues,
+  FieldValues,
+  FormProvider,
+  Resolver,
+  useForm,
+  useWatch,
+} from "react-hook-form";
 
 interface MyFormWrapperProps<TFieldValues extends FieldValues> {
   onSubmit: (data: TFieldValues) => void;
   className?: string;
   children: React.ReactNode;
-  defaultValues?: Partial<TFieldValues>;
+  defaultValues?: DefaultValues<TFieldValues>;
   resolver?: Resolver<TFieldValues, any>;
   setFormState?: (data: Partial<TFieldValues>) => void; // Optional state setter function
 }

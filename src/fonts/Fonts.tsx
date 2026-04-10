@@ -1,6 +1,7 @@
 import {
   Bitcount_Grid_Single,
   Gravitas_One,
+  Inter,
   Lobster_Two,
   Open_Sans,
   Playfair_Display,
@@ -20,11 +21,6 @@ export const playfair = Playfair_Display({
   variable: "--font-playfair",
 });
 
-export const bitcount = Bitcount_Grid_Single({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-bitcount",
-});
 
 export const lobster = Lobster_Two({
   subsets: ["latin"],
@@ -49,3 +45,9 @@ export const roboto = Roboto({
   weight: ["400", "500", "700"],
   variable: "--font-roboto",
 });
+
+export const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
+})

@@ -50,6 +50,7 @@
   --font-bitcount: var(--font-bitcount);
   --font-gravitas: var(--font-gravitas);
   --font-rowdies: var(--font-rowdies);
+  --font-inter: var(--font-inter);
 }
 
 :root {
