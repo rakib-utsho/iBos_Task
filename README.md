@@ -134,9 +134,9 @@ If a candidate loses internet during an exam:
 - Completed answers to additional questions:
   - Included above
 - Live demo link:
-  - Add your link: <https://your-live-demo-url>
+  - <https://i-bos-task.vercel.app/>
 - Video recording link:
-  - Add your link: <https://your-video-link>
+  - <https://drive.google.com/file/d/13Z2VGODPiaPgU6GtnXkTkA2BIKrrB6MN/view?usp=drive_link>
 - Backend/API integration (bonus):
   - Implemented
 
@@ -145,8 +145,8 @@ If a candidate loses internet during an exam:
 - [x] Source code in repository
 - [x] Setup instructions in README
 - [x] Additional question answers in README
-- [ ] Live demo URL added
-- [ ] Video recording URL added
+- [x] Live demo URL added
+- [x] Video recording URL added
 - [x] Backend/API integration implemented
 
 ## Author
